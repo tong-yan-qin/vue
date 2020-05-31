@@ -170,5 +170,184 @@ const obj = {
 
 若已经有值，可以直接写入，不用赋值操作。会自动给对象加个属性名和变量一样的属性。
 
+##### v-on事件监听
+
+###### v-on的基本写法
+
+```html
+<button v-on:click="increment">+</button>
+<button v-on:click="increment">-</button>
+```
+
+```
+methods:{
+	increment(){
+		this.counter++
+	},
+	decrement(){
+		this.counter--
+	}
+}
+```
+
+v-bind的简写是将v-bind省略。而v-on的简写是将v-on:替换为@
+
+```html
+<button @click="increment"></button>
+```
+
+###### v-on参数问题
+
+事件调用方法的时候可以不加小括号也可以，这时如果调用的方法需要一个参数的话，vue会默认将浏览器生成的event事件对象传入。
+
+当需要event对象，同时又需要其他参数的时候。我们可以这样传入
+
+```html
+<button @click="clickBtn('abc',$event)">按钮</button>
+```
+
+调用时手动取到event对象：$event。
+
+###### v-on修饰符
+
+```html
+<div @click="divClck">
+    <button @click.stop="btnClick">按钮</button>
+</div>
+```
+
+- .stop：阻止冒泡，调用event.stopPropagation()
+- .prevent：阻止默认事件，调用event.preVentDefault()
+- .enter: 监听某个键盘的点击。enter为回车
+- .native:监听组件根元的原生事件
+- .once：只触发一次回调
+
+##### v-if-else条件判断
+
+```html
+<h2 v-if="isShow">
+	{{message}}
+</h2>
+<h2 v-else-if="isShow1">
+    {{message1}}
+</h2>
+<h2 v-else>
+    {{message2}}
+</h2>
+```
+
+isShow为条件变量。和else配合使用.。
+
+##### v-show使用以及与v-if的区别
+
+v-show与if...else使用方法以及效果是相同的。有区别的是v-if-else当条件为false的时候，被包含的元素不会存在dom中。当为true的时候会重新创建一个。而v-show就是给元素添加一个行内样式：display:none/block
+
+使用选择的时候要看切换的频率。频率高的话就选择v-show，不过大多时候使用v-if
+
+##### v-for循环遍历
+
+###### 数组
+
+```html
+<ul>
+    <li v-for="item in names">{{item}}</li>
+</ul>
+```
+
+```html
+<ul>
+    <li v-for="(item,index) in names">{{index+1}}.{{item}}</li>
+</ul>
+```
+
+```
+data: {
+	names: ['why','zhangcheng','hks']
+}
+```
+
+###### 对象
+
+```html
+<ul>
+    <li v-for="item in obj">{{item}}</li>
+</ul>
+```
+
+```html
+<ul>
+    <li v-for="(value,key) in obj">{{key}}-{{value}}</li>
+</ul>
+```
+
+```html
+<ul>
+    <li v-for="(value,key,index) in obj">{{key}}-{{value}}</li>
+</ul>
+```
+
+```javascript
+data: {
+	bjj: {
+		name: 'hh',
+		age: '27',
+		gender: 'nan'
+	}
+}
+```
+
+在遍历对象的过程中，如果只是获取一个值，那么获取到的是value。可以获取三个值，键值下标
+
+##### 数组响应式方法
+
+```
+push()：添加到最后，多个
+pop()：删除最后一个
+shift()：删除第一个
+unshift()：添加到第一个
+splice()：删除、插入、替换元素
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
