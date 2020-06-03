@@ -4,7 +4,7 @@
 
 ##### 一秒看懂vue代码
 
-```
+```html
  <div id="app">
         <div>{{message}}</div>
     </div> 
@@ -305,39 +305,113 @@ push()：添加到最后，多个
 pop()：删除最后一个
 shift()：删除第一个
 unshift()：添加到第一个
-splice()：删除、插入、替换元素
-
+splice()：删除、插入、替换元素[起始,个数,新元素]
+sort()：排序
+revert()：反转
+set()：[目标数组,索引,新元素]
 ```
 
+数组下标索引的方式不是响应式的，所以需要用到以上的方法替换
 
+##### 过滤器使用
 
+与method、computed一样，过滤器使用filters表示，使用如下
 
+```html
+<td>{{item.price | showPrice}}</td>
+```
 
+```javascript
+filters: {
+	showPrice(price){
+		return '￥' + price.toFixed(2)
+	}
+}
+```
 
+##### 高阶函数
 
+编程范式：命令式编程、声明式编程、面向对象编程、函数式编程
 
+###### filter
 
+该函数必须返回一个布尔值，当为true时会加入到新数组里面，如果为false，就会被过滤掉
 
+```
+let newNums = nums.filter(function (n){
+	n<100;
+})
+```
 
+###### map
 
+遍历并返回一个新的元素加入新的数组
 
+```
+let new2Num = newNums.map(function(n) {
+	return n*2;
+})
+```
 
+###### reduce
 
+对数组里面的所有内容进行汇总
 
+```javascript
+/**
+* @previousValue 前一个值
+* @init 初始化值
+*/
+let new2Nums = new2Num.reduce(function(preValue, n){
+	return preValue + n
+},0)
+```
 
+##### 表单绑定v-model使用
 
+用户改变表单的值，data的值也会被改变
 
+```html
+<input type="text" v-model="message"> {{message}}
+```
 
+##### v-model修饰符
 
+- .lazy：懒加载，失去焦点才会绑定
+- .number：绑定的值为数字
+- .trim
 
+#### 组件化
 
+##### 基本使用
 
+创建组件构造器对象
 
+```javascript
+cibst cpnC = Vue.extend({
+	template: `
+		<div>
+			<h2>标题</h2>
+			<p>内容</p>
+		</div>`	
+})
+```
 
+注册组件
 
+```
+Vue.component("my-cpn",cpnC)
+```
 
+##### 局部组件
 
+与data、methods一样
 
+```
+components:{
+	cpn: cpnC
+}
+```
 
 
 
