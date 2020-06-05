@@ -413,15 +413,142 @@ components:{
 }
 ```
 
+##### 父子组件
 
+Vue.extend()方法传入的参数对象除了有template外还可以增加一个components进行注册组件，然后可以将组测的组件在父组件中使用。
 
+```javascript
+cibst cpnC1 = Vue.extend({
+	template: `
+		<div>
+			<h2>标题1</h2>
+			<p>内容1</p>
+		</div>`	
+})
 
+const cpn = Vue.extend({
+	template: `
+		<div>
+			<h2>标题</h2>
+			<p>内容</p>
+			<cpn1></cpn1>
+		</div>`	,
+    components: {
+        cpn1: cpnC1
+    }
+})
+```
 
+子组件不能在父组件之外使用。
 
+##### 注册组件语法糖
 
+```
+Vue.component('cpn1',{template:`xxx`})
+```
 
+```
+components: {
+	'cpn2': {
+		template:`xxx`
+	}
+}
+```
 
+语法糖将extend使用对象代替
 
+##### 组件注册与模板分离写法
 
+```html
+<script type="text/x-template" id="cpn">
+	<模板内容>
+</script>
+```
 
+```html
+<template id="cpn"></template
+```
 
+```javascript
+Vue.component('cpn',{
+	template: '#cpn'
+})
+```
+
+##### 父子组件通信
+
+###### 父组件向子组件传数据
+
+需要在注册组件的构造器中声明数据，有三种写法
+
+```javascript
+const cpn = {
+    template: '#cpn', //模板
+    //第一种:单纯的声明变量
+    props: ['cmovies', 'cmessage'],
+    
+    //第二种:限制类型
+	props:{
+        cmovies: Array,
+        cmessage: String
+    }  
+    
+    //第三种:限制类型并提供默认值
+    props: {
+    	cmessage: {
+    		type: String,
+    		default: 'aaa',
+    		requery: true //必须传值
+		},
+      	cmovies: {
+            type: Array,
+            defalut(){
+                return []
+            }
+        }
+	}   
+}
+```
+
+然后再使用cpn标签的时候可以向子组件传输数据
+
+```
+<cpn :cmovies="movie" :cmessage="message"></cpn>
+```
+
+###### 驼峰标识
+
+如果子组件使用的是驼峰命名，也就是包含大小写，那么在使用组件传值的时候，需要将子组件的变量名转成小写，并在大写转小写的字母前加横杠“-”，例如cMovies、cMessage如下
+
+```
+<cpn :c-movies="movie" :c-message="message"></cpn>
+```
+
+###### 子组件向父组件传输数据
+
+子组件要向父组件传输数据要使用到 $emit() 注册事件，该事件可传输参数给父组件，具体写法如下
+
+```
+methods: {
+	//发射事件、触发事件
+	this.$emit('item-click',item)
+}
+```
+
+父组件获取数据要通过使用的组件标签触发事件时调用父组件的方法传输
+
+```
+<cpn @item-click="cpnClick"></cpn>
+```
+
+父组件的方法
+
+```
+methods: {
+	cpnClick(item){
+		console.log(item)
+	}
+}
+```
+
+由此即可获取子组件的数据
