@@ -552,3 +552,139 @@ methods: {
 ```
 
 由此即可获取子组件的数据
+
+
+
+#### webpack模块打包
+
+##### 简单的示范
+
+导出：在功能模块中将可以复用或者单独的功能导出
+
+```javascript
+module.export = {} 
+```
+
+导入：在需要引用的模块引入
+
+```javascript
+let {} = require('paht')
+```
+
+打包：在控制台使用打包工具生成结果文件
+
+```
+webpack 源路径 结果路径
+```
+
+打包后，在html中只需要引入打包后的一个文件即可，这就是打包的意义。
+
+##### 简化打包步骤
+
+目标：当前打包需要两个路径，比较麻烦，希望只写webpack就能完成打包
+
+在打包目录下创建文件名字叫webpack.config.js，通过导出的方式将两个打包的路径告诉webpack即可
+
+```
+const path = require('paht')
+
+module.exports = {
+	entry: '源路径', 
+	output: {
+		path: '结果路径',//===>替代后path.resolve(_dirname,'当前路径下的目标文件夹')
+		filename: 'bound.js'
+	}
+}
+```
+
+需要注意的是结果路径不能是相对路径，而直接写绝对路径不灵活，所以需要用到node的path包，来动态的获取绝对路径。当前路径没有path包就需要初始化，生成一个package.json，任何项目需要单独依赖node环境都需要这个文件
+
+```
+npm init
+```
+
+package.json文件作用是可以引入依赖，修改该文件后为项目导入其他的包
+
+```
+npm install
+```
+
+其实webpack还有很多扩展命令，使用起来感觉比较繁琐且不统一。可以在package.json中配置成npm管理的命令
+
+```json
+{
+  "name": "webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
+
+使用 npm run build <==      来替代    <==webpack
+
+##### 打包css
+
+要打包css，需要用到loader，前往webpack.js.org查询loader相关信息。安装css-loader
+
+```
+npm install --save-dev css-loader
+```
+
+在webpack.config.js中配置相关内容
+
+```
+const path = require('path')
+
+module.exports = {
+	entry: './src/main.js',
+	output: {
+		path: path.resolve(__dirname,'dist'),
+		filename: 'bundle.js'
+	},
+	module: {
+		rules: [
+		  {
+			test: /\.css$/,
+			use: [ 'style-loader', 'css-loader' ]
+		  }
+		]
+	  }
+}
+```
+
+css-loader只负责加载，要应用到dom上还需要style-loader
+
+#### Vue Cli脚手架
+
+##### 使用
+
+安装vue3
+
+```
+npm install -g @vue/cli
+```
+
+拉去vue2
+
+```
+npm install -g @vue/cli-init
+```
+
+初始化2
+
+```
+vue init webpack my-project
+```
+
+初始化3
+
+```
+vue create my-project
+```
+
