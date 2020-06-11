@@ -553,7 +553,17 @@ methods: {
 
 由此即可获取子组件的数据
 
+童：
 
+补充知识点
+
+ref如果是绑定在组件中,那么通过this.$ref.(refname)获取的是组件对象
+
+ref如果是绑定在普通的元素中，那么通过his.$ref.(refname获取的是普通的元素
+
+
+
+第四天开始
 
 #### webpack模块打包
 
@@ -687,4 +697,6 @@ vue init webpack my-project
 ```
 vue create my-project
 ```
+
+
 
